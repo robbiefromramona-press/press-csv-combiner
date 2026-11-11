@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CSV Combiner | BIM-Press</title>
+<meta name="description" content="Combine a pile of CSV and spreadsheet files into one Excel workbook, one tab per file. Free, and your files never leave your browser.">
+<meta name="theme-color" content="#101011">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23ff6b1a'/%3E%3Cg fill='none' stroke='%23fff' stroke-width='4' stroke-linejoin='round'%3E%3Crect x='12' y='14' width='40' height='36' rx='3'/%3E%3Cpath d='M12 26h40M12 38h40M26 14v36'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Semi+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- =========================================================
+     HEADER
+     ========================================================= -->
+<header class="top">
+  <div class="wrap top-inner">
+    <a class="brand" href="https://bim-press.com" aria-label="BIM-Press home">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 64 64"><g fill="none" stroke="currentColor" stroke-width="3.6" stroke-linejoin="round"><rect x="8" y="10" width="48" height="44" rx="4"/><path d="M8 22h48M8 34h48M8 46h48M24 10v44M40 10v44"/></g></svg>
+      </span>
+      <span class="brand-word">BIM<span class="o">-Press</span></span>
+    </a>
+    <span class="beta-pill">Free beta</span>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="intro">
+    <h1>CSV <span class="o">Combiner</span></h1>
+    <p class="tagline">Stack a pile of CSVs into one tidy Excel workbook. One tab per file. No uploading to anyone's server.</p>
+  </section>
+
+  <!-- Shown instead of the tool when REQUIRE_LOGIN is true in js/config.js -->
+  <section class="panel login-gate" id="loginGate" hidden>
+    <h2>Please log in via BIM-Press</h2>
+    <p>CSV Combiner is for BIM-Press members. Log in on the main site, then come back here.</p>
+    <a class="btn btn-primary" href="https://bim-press.com">Go to BIM-Press</a>
+  </section>
+
+  <!-- =========================================================
+       THE TOOL
+       ========================================================= -->
+  <div id="tool">
+
+    <!-- 1. Drop zone -->
+    <section class="dropzone" id="dropzone" aria-label="Add files">
+      <svg class="drop-icon" viewBox="0 0 64 64" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M32 42V14M20 25l12-12 12 12"/><path d="M10 40v10a4 4 0 0 0 4 4h36a4 4 0 0 0 4-4V40"/></g></svg>
+      <p class="drop-title">Drop your files here</p>
+      <p class="drop-sub">CSV, TSV, TXT, XLS, XLSX, XLSM or ODS. As many as you like.</p>
+      <button class="btn btn-outline" id="chooseBtn" type="button">Choose files</button>
+      <input class="sr-only" id="fileInput" type="file" multiple
+             accept=".csv,.tsv,.txt,.xls,.xlsx,.xlsm,.ods" aria-label="Choose spreadsheet files to combine" tabindex="-1">
+    </section>
+
+    <!-- Skipped files and other notes about what was just added -->
+    <div class="notices" id="notices" role="status" aria-live="polite"></div>
+
+    <!-- 2. File list -->
+    <section class="panel files" id="filesPanel" hidden aria-labelledby="filesTitle">
+      <div class="panel-head">
+        <h2 id="filesTitle">Your files <span class="count" id="fileCount"></span></h2>
+        <button class="btn btn-ghost" id="clearBtn" type="button">Clear all</button>
+      </div>
+      <p class="hint">Each file becomes one tab, in this order. Drag the handle (or use the arrows) to reorder. Tab names can be edited.</p>
+      <ol class="file-list" id="fileList"></ol>
+    </section>
+
+    <!-- 3. Options -->
+    <section class="panel options" aria-labelledby="optionsTitle">
+      <h2 id="optionsTitle">Options</h2>
+      <label class="option">
+        <input type="checkbox" id="optText" checked>
+        <span>
+          <strong>Keep every value as text</strong>
+          <small>Protects point numbers like 001 and 00123 and long coordinates from being turned into numbers or dates by Excel. Leave this on for survey and layout data.</small>
+        </span>
+      </label>
+      <label class="option">
+        <input type="checkbox" id="optIndex">
+        <span>
+          <strong>Add an "Index" tab</strong>
+          <small>A first tab listing every file, its tab name, and its row and column counts.</small>
+        </span>
+      </label>
+    </section>
+
+    <!-- 4. The big button -->
+    <section class="go">
+      <p class="name-error" id="nameError" role="alert" hidden></p>
+      <button class="btn btn-primary btn-big" id="combineBtn" type="button" disabled>Combine and Download .xlsx</button>
+      <p class="go-hint" id="goHint">Add at least one file to get started.</p>
+    </section>
+
+    <!-- 5. Result -->
+    <section class="result" id="result" role="status" aria-live="polite" hidden></section>
+
+    <!-- 6. Google Sheets tip -->
+    <aside class="tip">
+      <strong>Google Sheets users:</strong>
+      upload the downloaded file to Google Drive and open it, or in Sheets go to
+      <em>File &gt; Import</em> and pick the file. Every tab comes along.
+    </aside>
+  </div>
+</main>
+
+<!-- =========================================================
+     FOOTER
+     ========================================================= -->
+<footer class="foot">
+  <div class="wrap foot-inner">
+    <p class="foot-privacy">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z"/></svg>
+      Your files are processed in your browser and never uploaded.
+    </p>
+    <p>Part of the BIM-Press tool family:
+      <a href="https://bim-press.com">bim-press.com</a>
+      <span aria-hidden="true">&middot;</span>
+      <a href="https://totalstationtech.com">totalstationtech.com</a>
+    </p>
+  </div>
+</footer>
+
+<script src="vendor/xlsx.full.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/combine-core.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

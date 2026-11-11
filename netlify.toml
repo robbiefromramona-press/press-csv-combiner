@@ -1,0 +1,12 @@
+# CSV Combiner is a plain static site: no build step.
+# Netlify just serves the files in this folder as they are.
+
+[build]
+  publish = "."
+
+# Basic security headers on every file.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
