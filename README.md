@@ -4,7 +4,7 @@ Drop in a pile of CSV or spreadsheet files and download **one Excel workbook (.x
 
 Everything happens in the visitor's browser. Files are never uploaded to any server.
 
-- Live site: https://press-csv-combiner.netlify.app (once deployed)
+- Live site: https://csv-combine.netlify.app (the Netlify project is named `csv-combine`)
 - Part of the BIM-Press tool family: https://bim-press.com and https://totalstationtech.com
 
 ## What it does

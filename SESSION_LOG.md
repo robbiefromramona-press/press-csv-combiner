@@ -49,10 +49,21 @@ Local browser check (Stage 4): loaded all samples plus a .png and a duplicate, r
 the button with a red message), reordered by arrows and by drag, opened a preview, combined with the Index tab on,
 read the downloaded workbook back: 9 tabs in the right order, `001` still `001`. No console errors. Checked at phone width.
 
-### Not done yet
-- Stage 6: GitHub repo + Netlify site (waiting for Robbie's yes).
-- Stage 7: card on bim-press.com.
+### Shipping (Stages 6 and 7), 2026-11-11 to 2026-11-12
+- Robbie said yes; pushed to the public repo https://github.com/robbiefromramona-press/press-csv-combiner
+- Netlify: Robbie connected the repo in the dashboard. The project is named **`csv-combine`** (not `press-csv-combiner`
+  as first planned); Robbie chose to keep it. Pushes to `main` deploy automatically.
+- **Live URL: https://csv-combine.netlify.app** Public, no login wall. Live files matched the repo byte for byte.
+  Ran the sample-file flow on the live site in Chrome: 7 files in, 7 tabs out in order, `001` kept, empty file
+  skipped with a warning, no console errors.
+- bim-press: one new "CSV Combiner" card added to `WEBSITE/index.html`, after Field Calculator in the
+  View All Tools row, same markup as the other cards. Nothing else changed. Pushed with Robbie's yes (commit `7dc83d9`).
+  Checked afterwards: bim-press.com serves the new card and its link opens the live tool.
+
+### Still to do / worth knowing
 - The result has not been opened in real Excel by a human yet (verified by reading the file back with SheetJS and a zip integrity check).
+- bim-press.com also lists tools in its top menu, search box and founding-member dropdown. CSV Combiner is not in those yet (the brief was one card only).
+- Not added to totalstationtech.com. The other tools appear on both sites, so Robbie may want it there too.
 
 ### Phase 2 ideas
 - Send straight to Google Sheets.
