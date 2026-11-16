@@ -2,3 +2,9 @@ node_modules
 .DS_Store
 Thumbs.db
 tests/output/
+
+# Local secrets and private notes: never commit
+.env
+.env.*
+!.env.example
+_private/
